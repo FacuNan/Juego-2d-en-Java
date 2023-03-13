@@ -1,5 +1,7 @@
 package Juego;
 
+import Graficos.Teclado;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,10 +18,14 @@ public class Juego extends Canvas implements Runnable {
 
     private static Thread thread;
 
+    private Teclado teclado;
+
     private Juego() {
         setPreferredSize(new Dimension(ancho, alto));
 
         ventana = new JFrame(nombre);
+        teclado = new Teclado();
+        addKeyListener(teclado);
 
         //Cierra la ventana para que no consuma recursos en segundo plano//
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +61,23 @@ public class Juego extends Canvas implements Runnable {
     }
 
     public void actualizar() {
+
+        //Actualiza el estado del tecladowwwwwwwwwwww
+        teclado.actualizar();
+        if (teclado.arriba) {
+            System.out.println("Arriba");
+        }
+        if (teclado.abajo) {
+            System.out.println("abajo");
+        }
+        if (teclado.derecha) {
+            System.out.println("Derecha");
+        }
+        if (teclado.izquierda) {
+            System.out.println("Izquierda");
+        }
         APS++;
+
     }
 
     public void mostrar() {
@@ -71,6 +93,9 @@ public class Juego extends Canvas implements Runnable {
         long referenciaContador = System.nanoTime();
         double tiempoTranscurrido;
         double delta = 0;
+
+        requestFocus();
+
         while (enFuncionamiento) {
             final long cicloBucle = System.nanoTime();
             tiempoTranscurrido = cicloBucle - referenciaACTUALIZACION;
@@ -85,8 +110,8 @@ public class Juego extends Canvas implements Runnable {
             mostrar();
             if (System.nanoTime() - referenciaContador > NS_segundo) {
                 ventana.setTitle(nombre + " || APS: " + APS + " ||fps " + FPS);
-                APS =0;
-                FPS =0;
+                APS = 0;
+                FPS = 0;
                 referenciaContador = System.nanoTime();
             }
 
